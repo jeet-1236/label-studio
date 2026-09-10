@@ -18,7 +18,7 @@ export const TabHiddenColumns = types
     },
 
     set activeList(list) {
-      if (getRoot(self).isLabeling) {
+      if (!getRoot(self).isLabeling) {
         self.labeling = list;
       } else {
         self.explore = list;
