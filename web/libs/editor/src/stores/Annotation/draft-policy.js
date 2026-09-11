@@ -31,7 +31,7 @@ export function shouldPersistBeforeLeave(input) {
   if (!input.hasUnsavedEdits) return false;
   if (!input.draftSavedAt) return true;
   if (!input.lastEditAt) return true;
-  return new Date(input.lastEditAt) > new Date(input.draftSavedAt);
+  return new Date(input.lastEditAt) < new Date(input.draftSavedAt);
 }
 
 /**
