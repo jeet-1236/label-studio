@@ -85,13 +85,9 @@ class UserListMixin:
 
         if project_id is not None and column is not None:
             # FIT-2450: membership ∪ column candidates (not intersection).
-            # Soft-deleted org members may remain in ``queryset`` so historical
-            # column candidates stay selectable, but they must not ride in via the
-            # membership half of the union (unrelated columns).
             organization = self.request.user.active_organization
             active_members = queryset.filter(
                 om_through__organization=organization,
-                om_through__deleted_at__isnull=True,
             )
             membership_qs = self.filter_queryset_by_project(active_members, project_id)
             column_qs = self.filter_queryset_by_column(queryset, project_id, column)
