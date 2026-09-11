@@ -43,7 +43,7 @@ const cloneCustoms = (hotkeys: CustomHotkeys): CustomHotkeys =>
   Object.fromEntries(Object.entries(hotkeys).map(([id, hotkey]) => [id, { ...hotkey }]));
 
 const sync = (): void => {
-  const editorKeymap = { ...productDefaults, ...toEditorKeymap(effectiveMap) };
+  const editorKeymap = { ...toEditorKeymap(effectiveMap), ...productDefaults };
   if (window.APP_SETTINGS) {
     window.APP_SETTINGS.editor_keymap = editorKeymap;
     window.APP_SETTINGS.lookupHotkey = (id: string) => effectiveHotkeys.get(id);
