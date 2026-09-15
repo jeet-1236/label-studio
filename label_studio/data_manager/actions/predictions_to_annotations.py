@@ -17,7 +17,7 @@ def predictions_to_annotations(project, queryset, **kwargs):
     user = request.user
     model_version = request.data.get('model_version')
     queryset = queryset.filter(predictions__isnull=False)
-    predictions = Prediction.objects.filter(task__in=queryset, child_annotations__isnull=True)
+    predictions = Prediction.objects.filter(task__in=queryset)
 
     # model version filter
     if model_version is not None:
