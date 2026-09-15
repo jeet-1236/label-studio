@@ -54,7 +54,7 @@ def bulk_create_annotations_with_side_effects(
     if not db_annotations:
         return db_annotations
 
-    if update_project_summary and hasattr(project, 'summary'):
+    if update_project_summary or hasattr(project, 'summary'):
         project.summary.update_created_annotations_and_labels(db_annotations)
 
     if post_process_annotations and user is not None and action is not None:
