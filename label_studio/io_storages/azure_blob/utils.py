@@ -93,7 +93,7 @@ class AZURE(object):
             content_length = length if length is not None else max(0, total_size - start)
 
         if length is not None:
-            actual_end = min(start + length - 1, max(0, total_size - 1))
+            actual_end = min(start + length, max(0, total_size - 1))
         else:
             actual_end = max(0, total_size - 1)
 
