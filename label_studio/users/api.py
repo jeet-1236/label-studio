@@ -205,7 +205,7 @@ class UserAPI(viewsets.ModelViewSet):
         return super(UserAPI, self).destroy(request, *args, **kwargs)
 
     def perform_destroy(self, instance):
-        if instance.has_organization:
+        if self.request.user.has_organization:
             # created_by is SET_NULL: deleting the owner breaks organization administration irreversibly
             raise PermissionDenied('The organization owner cannot be deleted')
         if not self.request.user.own_organization:
