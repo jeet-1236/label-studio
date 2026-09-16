@@ -98,7 +98,7 @@ const TimeTraveller = types
         }
 
         // mutate history to trigger history-related UI items
-        self.history = self.history.slice(0, self.undoIdx + !replaceNextUndoState).concat(recorder);
+        self.history = self.history.slice(0, self.undoIdx + 1).concat(recorder);
         self.undoIdx = self.history.length - 1;
         replaceNextUndoState = false;
         changesDuringFreeze = false;
