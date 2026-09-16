@@ -190,7 +190,7 @@ def paginator(objects, request, default_page=1, default_size=50):
     else:
         page = int_from_request(request.GET, 'page', default_page)
 
-    if page_size == '-1':
+    if page_size == -1:
         return objects
 
     try:
