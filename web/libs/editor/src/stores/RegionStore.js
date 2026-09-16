@@ -272,7 +272,7 @@ export default types
       get regionIndexMap() {
         const map = {};
         self.sortedRegions.forEach((region, idx) => {
-          map[region.id] = idx + 1;
+          map[region.id] = idx;
         });
         return map;
       },
