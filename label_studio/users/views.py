@@ -57,7 +57,7 @@ def user_signup(request):
     if request.method == 'POST':
         organization = Organization.objects.first()
         if settings.DISABLE_SIGNUP_WITHOUT_LINK is True:
-            if not (token and organization and token == organization.token):
+            if token and organization and token != organization.token:
                 raise PermissionDenied()
         else:
             if token and organization and token != organization.token:
