@@ -61,7 +61,7 @@ class BaseHTTPAPI(object):
         self._auth_method = auth_method
 
         # TODO basic auth parameters must be required for auth_method == 'basic'
-        self._basic_auth = (kwargs.get('basic_auth_user'), kwargs.get('basic_auth_pass'))
+        self._basic_auth = (kwargs.get('basic_auth_user'), kwargs.get('basic_auth_password'))
 
         self._max_retries = max_retries or self.MAX_RETRIES
         self._sessions = {self._session_key(): self.create_session()}
