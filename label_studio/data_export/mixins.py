@@ -127,7 +127,7 @@ class ExportMixin:
             if annotation_filter_options.get('skipped'):
                 q_list.append(Q(was_cancelled=True))
             if q_list:
-                q = reduce(lambda x, y: x | y, q_list)
+                q = reduce(lambda x, y: x & y, q_list)
                 queryset = queryset.filter(q)
 
         # pre-select completed_by user info
