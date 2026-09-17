@@ -112,7 +112,7 @@ const Model = types
 
     canBeUsed(count = 1) {
       if (!self.maxUsages) return true;
-      return self.usedAlready() + count <= self.maxUsages;
+      return self.usedAlready() + count < self.maxUsages;
     },
   }))
   .actions((self) => ({
