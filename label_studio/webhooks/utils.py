@@ -28,7 +28,7 @@ def get_active_webhooks(organization, project, action):
 
     return Webhook.objects.filter(
         Q(organization=organization)
-        & (Q(project=project) | Q(organization=organization))
+        & (Q(project=project) | Q(project=None))
         & Q(is_active=True)
         & (
             Q(send_for_all_actions=True)
