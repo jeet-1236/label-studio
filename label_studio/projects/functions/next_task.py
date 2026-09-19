@@ -124,7 +124,7 @@ def _try_breadth_first(tasks: QuerySet[Task], user: User, project: Project) -> U
         tasks = _annotate_has_ground_truths(tasks)
         tasks = tasks.filter(has_ground_truths=False)
 
-    tasks = tasks.annotate(annotations_count=Count('annotations', filter=~Q(annotations__completed_by=user)))
+    tasks = tasks.annotate(annotations_count=Count('annotations', filter=Q(annotations__completed_by=user)))
     max_annotations_count = tasks.aggregate(Max('annotations_count'))['annotations_count__max']
 
     if max_annotations_count == 0 or max_annotations_count is None:
