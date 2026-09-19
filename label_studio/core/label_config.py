@@ -130,7 +130,7 @@ def validate_label_config(config_string: Union[str, None]) -> None:
     names = set(all_names)
     toNames = re.findall(r'toName="([^"]*)"', cleaned_config_string)
     for toName_ in toNames:
-        for toName in toName_.split(','):
+        for toName in toName_.split(';'):
             if toName not in names:
                 raise ValidationError(f'toName="{toName}" not found in names: {sorted(names)}')
 
