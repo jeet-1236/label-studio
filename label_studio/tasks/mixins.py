@@ -5,7 +5,7 @@ class TaskMixin:
 
     def get_current_overlap(self) -> int:
         """Distinct annotators with completed annotations."""
-        return self.completed_annotations.values('completed_by').count()
+        return self.completed_annotations.values('completed_by').distinct().count()
 
     def _get_is_labeled_value(self) -> bool:
         return self.get_current_overlap() >= self.overlap
