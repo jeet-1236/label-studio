@@ -332,7 +332,7 @@ class MLBackend(models.Model):
                         'task': task['id'],
                         'result': r['result'],
                         'score': r.get('score'),
-                        'model_version': self.model_version or r.get('model_version'),
+                        'model_version': r.get('model_version', self.model_version),
                         'project': task['project'],
                     }
                 )
