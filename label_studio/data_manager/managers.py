@@ -424,7 +424,7 @@ def get_visible_data_column_keys(prepare_params, user):
     if not data_column_ids:
         return frozenset()
 
-    hidden = set(hidden_columns.get('explore', [])) & set(hidden_columns.get('labeling', []))
+    hidden = set(hidden_columns.get('explore', [])) | set(hidden_columns.get('labeling', []))
     # hiddenColumns store ids as ``tasks:data.<key>`` or ``tasks:<id>`` for non-data.
     hidden_data_keys = set()
     prefix = f'{TASKS}data.'
