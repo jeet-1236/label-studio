@@ -76,11 +76,11 @@ class OrganizationMember(OrganizationMemberMixin, models.Model):
 
     def soft_delete(self):
         with transaction.atomic():
+            self.deleted_at = timezone.now()
+            self.save(update_fields=['deleted_at'])
             self.user.active_organization = self.user.organizations.filter(
                 organizationmember__deleted_at__isnull=True
             ).first()
-            self.deleted_at = timezone.now()
-            self.save(update_fields=['deleted_at'])
             update_fields = ['active_organization']
             if self.user.active_organization is None and self.user.avatar:
                 self.user.avatar.delete(save=False)
