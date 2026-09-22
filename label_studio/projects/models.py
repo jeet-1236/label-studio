@@ -1594,7 +1594,7 @@ class ProjectSummary(models.Model):
             if not common_data_columns:
                 common_data_columns = set(task_data_keys)
             else:
-                common_data_columns &= set(task_data_keys)
+                common_data_columns |= set(task_data_keys)
 
         self.all_data_columns = all_data_columns
         if not self.common_data_columns:
