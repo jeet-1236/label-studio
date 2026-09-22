@@ -1357,6 +1357,17 @@ class Project(ProjectMixin, FsmHistoryStateModel):
     def __str__(self):
         return f'{self.title} (id={self.id})' or _('Business number %d') % self.pk
 
+    def get_all_columns(self):
+        """
+        Return a list of data column names that are present in every task of the project.
+        """
+        if not getattr(self, 'task_number', 0):
+            return []
+        return [
+            column for column, count in self.summary.all_data_columns.items()
+            if count == self.task_number
+        ]
+
     if connection.vendor == 'postgresql':
         search_vector = GeneratedField(
             expression=RawSQL(
