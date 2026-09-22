@@ -229,7 +229,7 @@ class ExportAPI(generics.RetrieveAPIView):
             logger.debug(f'Select only subset of {len(tasks_ids)} tasks')
             query = query.filter(id__in=tasks_ids)
         if only_finished:
-            query = query.filter(annotations__isnull=False).distinct()
+            query = query.filter(annotations__isnull=False)
 
         task_ids = query.values_list('id', flat=True)
 
