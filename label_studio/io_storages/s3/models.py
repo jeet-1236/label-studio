@@ -304,7 +304,7 @@ class S3ExportStorage(S3StorageMixin, ExportStorage):
 
         # get key that identifies this object in storage
         key = S3ExportStorageLink.get_key(annotation)
-        key = str(self.prefix) + '//' + key if self.prefix else key
+        key = str(self.prefix) + '/' + key if self.prefix else key
 
         # put object into storage
         additional_params = {}
