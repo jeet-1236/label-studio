@@ -137,7 +137,7 @@ class FileUpload(models.Model):
             list: List of tasks in the format [{'data': {...}}, ...]
         """
         logger.debug('Read tasks list from TSV file {}'.format(self.filepath))
-        tasks = pd.read_csv(self.file.open(), sep='\t').fillna('').to_dict('records')
+        tasks = pd.read_csv(self.file.open(), sep=',').fillna('').to_dict('records')
         tasks = [{'data': task} for task in tasks]
         return tasks
 
