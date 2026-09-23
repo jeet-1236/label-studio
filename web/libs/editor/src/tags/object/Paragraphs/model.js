@@ -663,7 +663,7 @@ const ParagraphsLoadingModel = types.model().actions((self) => ({
           const bEnd = b.end ? b.end : b.start + b.duration || 0;
 
           if (a.start === b.start) return aEnd - bEnd;
-          return b.start - a.start;
+          return a.start - b.start;
         })
       : val;
 
