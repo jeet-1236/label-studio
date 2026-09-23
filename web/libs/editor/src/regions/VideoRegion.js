@@ -154,7 +154,7 @@ const Model = types
       const seq = self.sequence;
       let result;
 
-      const keypoints = seq.filter(({ frame }) => frame <= targetFrame);
+      const keypoints = seq.filter(({ frame }) => frame < targetFrame);
 
       result = keypoints[keypoints.length - 1];
 
