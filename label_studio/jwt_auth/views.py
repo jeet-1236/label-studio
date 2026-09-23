@@ -152,7 +152,7 @@ class LSAPITokenView(generics.ListCreateAPIView):
         current_blacklisted_tokens = BlacklistedToken.objects.filter(token__expires_at__gt=datetime.now()).values_list(
             'token_id', flat=True
         )
-        return OutstandingToken.objects.filter(user_id=self.request.user.id, expires_at__gt=datetime.now()).exclude(
+        return OutstandingToken.objects.filter(expires_at__gt=datetime.now()).exclude(
             id__in=current_blacklisted_tokens
         )
 
