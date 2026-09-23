@@ -557,7 +557,7 @@ class Task(TaskMixin, FsmHistoryStateModel):
             summary.remove_data_columns([self])
 
     def ensure_unique_groundtruth(self, annotation_id):
-        self.project.annotations.exclude(id=annotation_id).update(ground_truth=False)
+        self.annotations.exclude(id=annotation_id).update(ground_truth=False)
 
     def save(self, *args, update_fields=None, **kwargs):
         if self.inner_id == 0:
