@@ -868,16 +868,16 @@ export const AppStore = types
       // An async action can explicitly opt out of an automatic reload (e.g. async Bulk Review): reloading
       // now would only refresh the first page while the background job is still running. Highlight the
       // Refresh button instead so the user can reload once the job has finished.
-      if (result.reload === false) {
-        self.backgroundActionPending = true;
-        view?.clearSelection?.();
-        view?.unlock?.();
-        self.SDK.invoke("actionDialogOkComplete", actionId, {
-          result,
-          view: viewReloaded,
-          project: projectFetched,
-        });
-        return result;
+      if (result.reload === false && result.async) {
+      self.backgroundActionPending = true;
+      view?.clearSelection?.();
+      view?.unlock?.();
+      self.SDK.invoke("actionDialogOkComplete", actionId, {
+       result,
+       view: viewReloaded,
+       project: projectFetched,
+      });
+      return result;
       }
 
       if (options.reload !== false) {
