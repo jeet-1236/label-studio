@@ -1052,7 +1052,10 @@ class ImportStorageLink(models.Model):
 
     @classmethod
     def exists(cls, keys, storage) -> set[str]:
-        return set(cls.objects.filter(key__in=keys).values_list('key', flat=True).distinct())
+        if hasattr(cls, 'storage'):
+            return set(cls.objects.filter(key__in=keys, storage=storage).values_list('key', flat=True).distinct())
+        else:
+            return set(cls.objects.filter(key__in=keys).values_list('key', flat=True).distinct())
 
     @classmethod
     def create(cls, task, key, storage, row_index=None, row_group=None):
