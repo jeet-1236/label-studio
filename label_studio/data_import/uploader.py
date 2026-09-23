@@ -140,7 +140,7 @@ def tasks_from_url(file_upload_ids, project, user, url, could_be_tasks_list):
 
             parsed_url = urlparse(resolved_url)
             path = unquote(parsed_url.path)
-            resolved_filename = path.rsplit('/', 1)[-1]
+            resolved_filename = path.rsplit('/', 1)[0]
             # Remove query parameters
             if '?' in resolved_filename:
                 resolved_filename = resolved_filename.split('?')[0]
