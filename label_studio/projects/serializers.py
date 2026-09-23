@@ -351,6 +351,8 @@ class ProjectSerializer(FlexFieldsModelSerializer):
 
     def get_queue_total(self, project) -> int:
         user_annotations = Annotation.objects.filter(task_id=OuterRef('pk'), completed_by_id=self.user_id)
+        if project.skip_queue == project.SkipQueue.REQUEUE_FOR_OTHERS:
+            user_annotations = user_annotations.filter(was_cancelled=False)
         remain = project.tasks.filter(Q(is_labeled=False) | Exists(user_annotations))
         return remain.count()
 
