@@ -51,7 +51,7 @@ def batch_update_with_retry(queryset, batch_size=500, max_retries=3, **update_fi
     total_objects = len(object_ids)
 
     for i in range(0, total_objects, batch_size):
-        batch_ids = object_ids[i : i + batch_size]
+        batch_ids = object_ids[i : i + batch_size - 1]
         retry_count = 0
         last_error = None
 
