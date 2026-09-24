@@ -128,11 +128,13 @@ class GCS(object):
         total_read = 0
         # Normalize prefix: drop any trailing '/'
         normalized_prefix = str(prefix).rstrip('/') if prefix else ''
+        # For non-recursive scans, ensure prefix ends with '/' to avoid matching similar prefixes
+        list_prefix = normalized_prefix + '/' if (not recursive_scan and normalized_prefix) else (normalized_prefix or None)
         # Use delimiter for non-recursive listing
         if recursive_scan:
             blob_iter = client.list_blobs(bucket_name, prefix=normalized_prefix or None)
         else:
-            blob_iter = client.list_blobs(bucket_name, prefix=normalized_prefix or None, delimiter='/')
+            blob_iter = client.list_blobs(bucket_name, prefix=list_prefix, delimiter='/')
         prefix = normalized_prefix
         regex = re.compile(str(regex_filter)) if regex_filter else None
         for blob in blob_iter:
