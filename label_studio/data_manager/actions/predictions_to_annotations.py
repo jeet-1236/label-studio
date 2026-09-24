@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 def predictions_to_annotations(project, queryset, **kwargs):
-    request = kwargs['request']
+    request = kwargs["request"]
     user = request.user
-    model_version = request.data.get('model_version')
+    model_version = request.data.get("model_version")
     queryset = queryset.filter(predictions__isnull=False)
     predictions = Prediction.objects.filter(task__in=queryset)
 
@@ -26,36 +26,52 @@ def predictions_to_annotations(project, queryset, **kwargs):
         else:
             predictions = predictions.filter(model_version=model_version)
 
-    predictions_values = list(predictions.values_list('result', 'model_version', 'task_id', 'id'))
+    # fetch needed fields from predictions
+    predictions_values = list(
+        predictions.values_list("result", "model_version", "task_id", "id")
+    )
+    # collect prediction ids to detect already‑converted ones
+    prediction_ids = [pid for _, _, _, pid in predictions_values]
+
+    # existing annotations that already reference a prediction
+    existing_parent_ids = set(
+        Annotation.objects.filter(parent_prediction_id__in=prediction_ids).values_list(
+            "parent_prediction_id", flat=True
+        )
+    )
 
     # prepare annotations
     annotations = []
     tasks_ids = []
     for result, model_version, task_id, prediction_id in predictions_values:
+        # skip predictions that already have an annotation
+        if prediction_id in existing_parent_ids:
+            continue
+
         tasks_ids.append(task_id)
         body = {
-            'result': result,
-            'completed_by_id': user.pk,
-            'task_id': task_id,
-            'parent_prediction_id': prediction_id,
-            'project': project,
+            "result": result,
+            "completed_by_id": user.pk,
+            "task_id": task_id,
+            "parent_prediction_id": prediction_id,
+            "project": project,
         }
-        body = TaskSerializerBulk.add_annotation_fields(body, user, 'prediction')
+        body = TaskSerializerBulk.add_annotation_fields(body, user, "prediction")
         annotations.append(body)
 
     count = len(annotations)
-    logger.debug(f'{count} predictions will be converter to annotations')
+    logger.debug(f"{count} predictions will be converter to annotations")
     db_annotations = [Annotation(**annotation) for annotation in annotations]
     db_annotations = bulk_create_annotations_with_side_effects(
         db_annotations,
         project=project,
         user=user,
-        action='prediction',
+        action="prediction",
         tasks_queryset=Task.objects.filter(id__in=tasks_ids),
         emit_created_webhook=True,
     )
 
-    return {'response_code': 200, 'detail': f'Created {count} annotations'}
+    return {"response_code": 200, "detail": f"Created {count} annotations"}
 
 
 def predictions_to_annotations_form(user, project):
@@ -73,14 +89,14 @@ def predictions_to_annotations_form(user, project):
 
     return [
         {
-            'columnCount': 1,
-            'fields': [
+            "columnCount": 1,
+            "fields": [
                 {
-                    'type': 'select',
-                    'name': 'model_version',
-                    'label': 'Choose predictions',
-                    'options': versions,
-                    'value': first,
+                    "type": "select",
+                    "name": "model_version",
+                    "label": "Choose predictions",
+                    "options": versions,
+                    "value": first,
                 }
             ],
         }
@@ -89,17 +105,17 @@ def predictions_to_annotations_form(user, project):
 
 actions: list[DataManagerAction] = [
     {
-        'entry_point': predictions_to_annotations,
-        'permission': all_permissions.tasks_change,
-        'title': 'Create Annotations From Predictions',
-        'order': 91,
-        'dialog': {
-            'title': 'Create Annotations From Predictions',
-            'text': 'Create annotations from predictions using selected predictions set '
-            'for each selected task. '
-            'Your account will be assigned as an owner to those annotations. ',
-            'type': 'confirm',
-            'form': predictions_to_annotations_form,
+        "entry_point": predictions_to_annotations,
+        "permission": all_permissions.tasks_change,
+        "title": "Create Annotations From Predictions",
+        "order": 91,
+        "dialog": {
+            "title": "Create Annotations From Predictions",
+            "text": "Create annotations from predictions using selected predictions set "
+            "for each selected task. "
+            "Your account will be assigned as an owner to those annotations. ",
+            "type": "confirm",
+            "form": predictions_to_annotations_form,
         },
     }
 ]
