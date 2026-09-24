@@ -56,10 +56,12 @@ def user_signup(request):
     # make a new user
     if request.method == 'POST':
         organization = Organization.objects.first()
-        if settings.DISABLE_SIGNUP_WITHOUT_LINK is True:
-            if token and organization and token != organization.token:
+        if settings.DISABLE_SIGNUP_WITHOUT_LINK:
+            # Token is mandatory; also require a valid organization and matching token
+            if not token or not organization or token != organization.token:
                 raise PermissionDenied()
         else:
+            # Token is optional; if provided it must match the organization's token
             if token and organization and token != organization.token:
                 raise PermissionDenied()
 
