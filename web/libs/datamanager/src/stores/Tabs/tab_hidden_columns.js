@@ -18,12 +18,15 @@ export const TabHiddenColumns = types
     },
 
     set activeList(list) {
-      if (!getRoot(self).isLabeling) {
+      if (getRoot(self).isLabeling) {
+        // When labeling mode is active, update the labeling hidden columns
         self.labeling = list;
       } else {
+        // When not labeling (explore mode), update the explore hidden columns
         self.explore = list;
       }
-      self.activeList;
+      // Trigger any MobX reactions that depend on activeList
+      this.activeList;
     },
 
     hasColumn(column) {
