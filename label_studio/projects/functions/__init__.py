@@ -23,7 +23,8 @@ def annotate_total_predictions_number(queryset):
 
 
 def annotate_total_annotations_number(queryset):
-    subquery = Annotation.objects.filter(project=OuterRef('pk')).values('id')
+    # Exclude cancelled (skipped) annotations from the total count
+    subquery = Annotation.objects.filter(project=OuterRef('pk'), was_cancelled=False).values('id')
     return queryset.annotate(total_annotations_number=SQCount(subquery))
 
 
