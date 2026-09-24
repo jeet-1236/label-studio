@@ -29,7 +29,10 @@ member's profile. Per-user filtering in the API is a convenience, not an access 
 authenticated user can access another user's data" is therefore not a vulnerability on its own.
 A cloud storage connection gives every member read access to the whole bucket or container, as far
 as its credentials allow: `prefix` and the file filter select what sync imports and are not an
-access boundary. Restrict access with the credentials' IAM policy.
+access boundary. **Note: the prefix is matched as a literal string and trailing '/' is stripped,
+so a non‑recursive scan with prefix `dataset` will also match keys like `dataset‑archive/...`. Use
+distinct prefixes or naming conventions to avoid unintended imports.** Restrict access with the
+credentials' IAM policy.
 
 ### What is in scope
 
