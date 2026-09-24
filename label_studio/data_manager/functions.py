@@ -409,6 +409,8 @@ def preprocess_field_name(raw_field_name, project) -> Tuple[str, bool]:
             real_name_suitable
             # common data columns are not None
             and common_data_columns
+            # $undefined$ is in common data columns, in all tasks
+            and settings.DATA_UNDEFINED_NAME in common_data_columns
         ):
             field_name = f'data__{settings.DATA_UNDEFINED_NAME}'
         else:
