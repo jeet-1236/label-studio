@@ -45,6 +45,8 @@ def sanitize_prediction_import_payload(prediction):
     if not isinstance(prediction, MutableMapping):
         return prediction
     prediction.pop('state', None)
+    if 'result' not in prediction:
+        raise ValidationError('Prediction must contain a result field.')
     return prediction
 
 
