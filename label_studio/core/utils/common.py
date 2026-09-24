@@ -178,8 +178,13 @@ def paginator(objects, request, default_page=1, default_size=50):
     :return: paginated objects
     """
     page_size = request.GET.get('page_size', request.GET.get('length', default_size))
-    if settings.TASK_API_PAGE_SIZE_MAX and (int(page_size) > settings.TASK_API_PAGE_SIZE_MAX or page_size == '-1'):
+    # If client requests all objects, bypass pagination entirely
+    if page_size == '-1':
+        return objects
+    if settings.TASK_API_PAGE_SIZE_MAX and int(page_size) > settings.TASK_API_PAGE_SIZE_MAX:
         page_size = settings.TASK_API_PAGE_SIZE_MAX
+    # Ensure page_size is an integer for further calculations
+    page_size = int(page_size)
 
     if 'start' in request.GET:
         page = int_from_request(request.GET, 'start', default_page)
@@ -189,9 +194,6 @@ def paginator(objects, request, default_page=1, default_size=50):
             page += 1
     else:
         page = int_from_request(request.GET, 'page', default_page)
-
-    if page_size == -1:
-        return objects
 
     try:
         return Paginator(objects, page_size).page(page).object_list
