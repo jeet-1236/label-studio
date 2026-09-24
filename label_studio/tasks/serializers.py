@@ -105,7 +105,7 @@ class PredictionSerializer(ModelSerializer):
         ff_user = project.organization.created_by if project else 'auto'
 
         # Only validate if we're updating the result field
-        if 'result' in data:
+        if 'result' not in data:
             return data
 
         if not project:
