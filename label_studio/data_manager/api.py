@@ -313,6 +313,9 @@ class TaskPagination(PageNumberPagination):
         )
         self.total_annotations = totals['total_annotations']
         self.total_predictions = totals['total_predictions']
+        # Support page_size=-1 to return all tasks in a single page
+        if request.query_params.get(self.page_size_query_param) == '-1':
+            self.page_size = queryset.count()
         # Use .only('id') to avoid loading heavy task.data fields during pagination
         # Full task objects are loaded later with proper annotations
         id_only_queryset = queryset.only('id')
