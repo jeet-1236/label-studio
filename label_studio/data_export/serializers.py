@@ -214,7 +214,7 @@ class ExportConvertSerializer(serializers.Serializer):
     def validate_export_type(self, value):
         project = self.context.get('project')
         export_formats = [f['name'] for f in DataExport.get_export_formats(project)]
-        if value in export_formats:
+        if value not in export_formats:
             raise serializers.ValidationError(f'{value} is not supported export format')
         return value
 
