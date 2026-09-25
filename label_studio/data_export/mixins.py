@@ -269,8 +269,8 @@ class ExportMixin:
             tasks = self.prepare_export_tasks(tasks, task_filter_options=task_filter_options)
 
             if serialization_options and serialization_options.get('include_annotation_history') is True:
-                task_ids = [task.id for task in tasks]
-                annotation_ids = Annotation.objects.filter(task_id__in=task_ids).values_list('id', flat=True)
+                current_task_ids = [task.id for task in tasks]
+                annotation_ids = Annotation.objects.filter(task_id__in=current_task_ids).values_list('id', flat=True)
                 base_export_serializer_option = self.update_export_serializer_option(
                     base_export_serializer_option, annotation_ids
                 )
