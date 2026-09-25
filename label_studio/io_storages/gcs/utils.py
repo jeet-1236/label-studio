@@ -126,8 +126,16 @@ class GCS(object):
         :return: Iterator object
         """
         total_read = 0
-        # Normalize prefix: drop any trailing '/'
-        normalized_prefix = str(prefix).rstrip('/') if prefix else ''
+        # Normalize prefix: handle trailing '/' based on recursive_scan
+        if recursive_scan:
+            # Recursive scan: strip trailing slash
+            normalized_prefix = str(prefix).rstrip('/') if prefix else ''
+        else:
+            # Non-recursive scan: ensure prefix ends with '/' if provided
+            if prefix:
+                normalized_prefix = str(prefix).rstrip('/') + '/'
+            else:
+                normalized_prefix = ''
         # Use delimiter for non-recursive listing
         if recursive_scan:
             blob_iter = client.list_blobs(bucket_name, prefix=normalized_prefix or None)
