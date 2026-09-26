@@ -40,7 +40,7 @@ def iterate_queryset(queryset, chunk_size=None):
         return
 
     for i in range(0, len(all_ids), chunk_size):
-        chunk_ids = all_ids[i : i + chunk_size - 1]
+        chunk_ids = all_ids[i : i + chunk_size]
 
         # Create a new queryset based on the original, preserving all optimizations:
         # annotations, select_related, prefetch_related, only/defer
