@@ -119,8 +119,12 @@ const TimeTraveller = types
           throw new Error(
             "Failed to find target store for TimeTraveller. Please provide `targetPath` property, or a `targetStore` in the environment",
           );
+        // Prevent the immediate snapshot emitted by onSnapshot from being recorded as an undo state
+        self.skipNextUndoState = true;
         // start listening to changes
         snapshotDisposer = onSnapshot(targetStore, (snapshot) => this.addUndoState(snapshot));
+        // Reset the flag so subsequent real changes are recorded
+        self.skipNextUndoState = false;
         // record an initial state if no known
         if (self.history.length === 0) {
           self.recordNow();
