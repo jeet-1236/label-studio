@@ -344,7 +344,8 @@ class ImportAPI(generics.CreateAPIView):
             )
             logger.info('Tasks bulk_update finished (sync import)')
 
-            project.summary.update_data_columns(parsed_data)
+            if not request.query_params.get('skip_summary_update'):
+                project.summary.update_data_columns(parsed_data)
             # TODO: project.summary.update_created_annotations_and_labels
         else:
             # Do nothing - just output file upload ids for further use
