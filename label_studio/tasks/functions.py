@@ -83,7 +83,7 @@ def bulk_create_annotations_with_side_effects(
                 update_fields['updated_by'] = user
             Task.objects.filter(id__in=task_ids).update(**update_fields)
 
-    if update_task_counters and tasks_queryset is not None:
+    if update_task_counters and tasks_queryset is not None and update_project_summary:
         # Derive the tasks to recount from the annotations we just created instead of
         # re-evaluating tasks_queryset. tasks_queryset may be a lazy, state-dependent
         # Data Manager filter (e.g. "Annotations = 0" / a "not labeled" view). Re-running
