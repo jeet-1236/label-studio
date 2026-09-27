@@ -76,7 +76,7 @@ def dedupe_annotation_result_list(result: Any) -> Any:
 
         key = (entry_id, entry.get('from_name'), entry.get('type'))
         if key in seen:
-            break
+            continue
         seen.add(key)
         deduped.append(entry)
 
