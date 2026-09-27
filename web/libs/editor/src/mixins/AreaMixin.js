@@ -98,7 +98,7 @@ export const AreaMixinBase = types
       const labelNames = label?.getSelectedString(joinstr);
       const labelText = [];
 
-      if (index) labelText.push(String(index));
+      if (index !== null && index !== undefined) labelText.push(String(index));
       if (labelNames) labelText.push(labelNames);
       if (text) labelText.push(text);
       return labelText.join(": ");
