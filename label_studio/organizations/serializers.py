@@ -21,7 +21,8 @@ class OrganizationSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = '__all__'
-        read_only_fields = ('created_at',)
+        # created_by is the only privilege boundary in LSO (member removal), never mass-assignable
+        read_only_fields = ('created_by',)
 
 
 # =========================================
