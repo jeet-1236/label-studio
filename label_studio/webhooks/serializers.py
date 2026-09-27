@@ -54,7 +54,7 @@ class WebhookSerializer(serializers.ModelSerializer):
         actions = validated_data.pop('_actions', [])
         # Reset the auto-disable failure counter when a user re-activates the webhook or points it
         # at a new endpoint, so a corrected hook doesn't immediately trip again on stale strikes.
-        reactivating = validated_data.get('is_active') and instance.is_active
+        reactivating = validated_data.get('is_active') and not instance.is_active
         endpoint_changed = ('url' in validated_data and validated_data['url'] != instance.url) or (
             'headers' in validated_data and validated_data['headers'] != instance.headers
         )
