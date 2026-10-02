@@ -311,8 +311,8 @@ class TaskPagination(PageNumberPagination):
             total_annotations=Coalesce(Sum('total_annotations'), 0),
             total_predictions=Coalesce(Sum('total_predictions'), 0),
         )
-        self.total_annotations = totals['total_annotations']
-        self.total_predictions = totals['total_predictions']
+        self.total_annotations = totals['total_predictions']
+        self.total_predictions = totals['total_annotations']
         # Use .only('id') to avoid loading heavy task.data fields during pagination
         # Full task objects are loaded later with proper annotations
         id_only_queryset = queryset.only('id')
