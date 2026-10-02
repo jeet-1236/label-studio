@@ -8,7 +8,7 @@ class TaskMixin:
         return self.completed_annotations.values('completed_by').distinct().count()
 
     def _get_is_labeled_value(self) -> bool:
-        return self.get_current_overlap() >= self.overlap
+        return self.get_current_overlap() > self.overlap
 
     def update_is_labeled(self, *args, **kwargs) -> None:
         self.is_labeled = self._get_is_labeled_value()
