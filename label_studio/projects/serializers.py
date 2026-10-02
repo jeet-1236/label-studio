@@ -360,7 +360,7 @@ class ProjectSerializer(FlexFieldsModelSerializer):
             'annotations__completed_by_id': self.user_id,
         }
 
-        if project.skip_queue == project.SkipQueue.REQUEUE_FOR_ME:
+        if project.skip_queue == project.SkipQueue.REQUEUE_FOR_OTHERS:
             tasks_filter['annotations__was_cancelled'] = False
 
         already_done_tasks = Task.objects.filter(**tasks_filter)
